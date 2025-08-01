@@ -1,43 +1,54 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/handler/extension"
-	"github.com/99designs/gqlgen/graphql/handler/lru"
-	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
+	_ "github.com/lib/pq"
 	"github.com/markuscandido/go-expert-graphql/graph"
-	"github.com/vektah/gqlparser/v2/ast"
+	"github.com/markuscandido/go-expert-graphql/internal/config"
+	"github.com/markuscandido/go-expert-graphql/internal/database"
 )
 
-const defaultPort = "8080"
-
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
+	log.Println("Starting application...")
+
+	log.Println("Loading configuration...")
+	cfg, err := config.LoadConfig()
+	if err != nil {
+		log.Fatalf("FATAL: error loading configuration: %v", err)
 	}
+	log.Println("Configuration loaded successfully.")
 
-	srv := handler.New(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", cfg.DBUser, cfg.DBPassword, cfg.DBHost, cfg.DBPort, cfg.DBName)
 
-	srv.AddTransport(transport.Options{})
-	srv.AddTransport(transport.GET{})
-	srv.AddTransport(transport.POST{})
+	log.Println("Connecting to database...")
+	db, err := sql.Open("postgres", dsn)
+	if err != nil {
+		log.Fatalf("FATAL: failed to open database: %v", err)
+	}
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Printf("ERROR: failed to close database: %v", err)
+		}
+	}()
+	log.Println("Database connection established.")
 
-	srv.SetQueryCache(lru.New[*ast.QueryDocument](1000))
+	categoryDb := database.NewCategory(db)
+	//courseDb := database.NewCourse(db)
 
-	srv.Use(extension.Introspection{})
-	srv.Use(extension.AutomaticPersistedQuery{
-		Cache: lru.New[string](100),
-	})
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{CategoryDB: categoryDb}}))
 
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Printf("GraphQL playground available at http://localhost:%s/", cfg.Port)
+	log.Printf("Starting server on port %s...", cfg.Port)
+	if err := http.ListenAndServe(":"+cfg.Port, nil); err != nil {
+		log.Fatalf("FATAL: could not start server: %v", err)
+	}
 }

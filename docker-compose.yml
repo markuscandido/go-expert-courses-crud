@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro  # Monta o fuso horário do host
+      - /etc/timezone:/etc/timezone:ro    # Monta o timezone do host
+      - ./.data/postgres/data:/var/lib/postgresql/data # Volume para persistência de dados
+    restart: unless-stopped
+  
