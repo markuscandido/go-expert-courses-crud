@@ -43,7 +43,7 @@ func (r *queryResolver) Categories(ctx context.Context) ([]*model.Category, erro
 	if err != nil {
 		return nil, err
 	}
-	categoriesModel := make([]*model.Category, len(categories))
+	categoriesModel := make([]*model.Category, 0, len(categories))
 	for _, category := range categories {
 		categoriesModel = append(categoriesModel, &model.Category{
 			ID:          category.ID,
@@ -60,7 +60,7 @@ func (r *queryResolver) Courses(ctx context.Context) ([]*model.Course, error) {
 	if err != nil {
 		return nil, err
 	}
-	coursesModel := make([]*model.Course, len(courses))
+	coursesModel := make([]*model.Course, 0, len(courses))
 	for _, course := range courses {
 		coursesModel = append(coursesModel, &model.Course{
 			ID:          course.ID,
