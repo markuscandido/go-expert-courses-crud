@@ -1,86 +1,128 @@
-# Guia de Contribuição
+# Guia de Contribuição 👩‍💻👨‍💻
 
-Obrigado por considerar contribuir para este projeto! Aqui estão algumas diretrizes para te ajudar a começar.
+Obrigado por contribuir para o projeto Go Expert GraphQL! Este guia irá te ajudar a começar.
 
-## 📋 Como Contribuir
+## 🚀 Primeiros Passos
 
-1. **Encontre uma Issue**
-   - Verifique as [issues abertas](https://github.com/seu-usuario/seu-projeto/issues) para encontrar algo que você gostaria de trabalhar
-   - Se não encontrar uma issue que atenda ao que você deseja implementar, sinta-se à vontade para abrir uma nova
+1. **Configuração do Ambiente**
+   - Siga as instruções do [README.md](./README.md)
+   - Certifique-se de que todos os testes estão passando:
+     ```bash
+     go test ./...
+     ```
 
-2. **Faça um Fork do Repositório**
-   ```bash
-   git clone https://github.com/seu-usuario/seu-projeto.git
-   cd seu-projeto
-   ```
+2. **Encontre uma Tarefa**
+   - Verifique as [issues abertas](https://github.com/markuscandido/go-expert-graphql/issues)
+   - Para novas funcionalidades, abra uma issue para discussão
 
-3. **Crie uma Branch para sua Feature**
-   ```bash
-   git checkout -b feature/nova-funcionalidade
-   ```
+## 🔄 Fluxo de Desenvolvimento
 
-4. **Desenvolva sua Feature**
-   - Siga o padrão de código do projeto
-   - Adicione testes para suas alterações
-   - Atualize a documentação conforme necessário
+```bash
+# 1. Faça um fork e clone o repositório
+git clone https://github.com/seu-usuario/go-expert-graphql.git
+cd go-expert-graphql
 
-5. **Execute os Testes**
-   ```bash
-   go test ./...
-   ```
+# 2. Crie uma branch
+git checkout -b feature/nome-da-feature
 
-6. **Verifique o Lint**
-   ```bash
-   golangci-lint run
-   ```
+# 3. Desenvolva sua feature
+# - Siga as convenções de código abaixo
+# - Adicione testes para novas funcionalidades
+# - Atualize a documentação
 
-7. **Faça o Commit das suas Alterações**
-   ```bash
-   git add .
-   git commit -m "feat: adiciona nova funcionalidade"
-   ```
+# 4. Execute testes e formate o código
+golangci-lint run
+go test -v ./...
 
-8. **Envie as Alterações**
-   ```bash
-   git push origin feature/nova-funcionalidade
-   ```
+go fmt ./...
 
-9. **Abra um Pull Request**
-   - Vá até o repositório original
-   - Clique em "New Pull Request"
-   - Descreva suas alterações e referencie a issue relacionada
+# 5. Faça o commit seguindo o padrão Conventional Commits
+git add .
+git commit -m "tipo: descrição concisa"  # Ex: feat: adiciona autenticação
 
-## 🏗️ Padrões de Código
+git push origin feature/nome-da-feature
+```
 
+## 📝 Padrões do Projeto
+
+### Código
 - Siga o [Effective Go](https://golang.org/doc/effective_go.html)
-- Use `gofmt` ou `goimports` para formatar o código
+- Use nomes descritivos para variáveis e funções
 - Documente funções e tipos públicos
-- Escreva testes para novas funcionalidades
+- Mantenha as funções pequenas e focadas
+- Use `gofmt` ou `goimports` para formatação
 
-## 🧪 Testes
+### Testes
+- Cobertura mínima de 80%
+- Adicione testes para novas funcionalidades
+- Execute todos os testes antes de enviar PRs
 
-- Testes unitários devem cobrir pelo menos 80% do código
-- Execute todos os testes antes de enviar um PR:
-  ```bash
-  go test -v ./...
-  ```
+### Migrações de Banco de Dados
+- Toda alteração no esquema requer migração
+- Formato: `000N_descricao_da_migracao.up.sql`
+- Inclua arquivo `.down.sql` para rollback
+- Migrações devem ser idempotentes
 
-## 📝 Padrão de Commits
+#### Gerenciamento Manual de Migrações
 
-Utilizamos o [Conventional Commits](https://www.conventionalcommits.org/):
+Em alguns cenários, pode ser necessário gerenciar as migrações manualmente. Aqui está como fazer isso:
 
+1. **Instalação do golang-migrate**
+   ```bash
+   # Linux (usando curl)
+   curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.0/migrate.linux-amd64.tar.gz | tar xvz
+   sudo mv migrate /usr/local/bin/
+   
+   # macOS (usando Homebrew)
+   brew install golang-migrate
+   
+   # Windows (usando Chocolatey)
+   choco install migrate
+   ```
+
+2. **Comandos Básicos**
+   ```bash
+   # Aplicar todas as migrações pendentes
+   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations up
+   
+   # Reverter a última migração
+   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations down 1
+   
+   # Forçar a versão específica (útil em desenvolvimento)
+   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations force VERSION
+   
+   # Verificar versão atual
+   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations version
+   ```
+
+3. **Dicas de Uso**
+   - Substitua `user`, `pass`, `localhost`, `5432` e `dbname` pelas suas credenciais
+   - Use a flag `-verbose` para ver o que está acontecendo
+   - Para ambientes de produção, use variáveis de ambiente para as credenciais
+   
+4. **Solução de Problemas**
+   - Se encontrar erros de permissão, verifique as credenciais do banco de dados
+   - Para problemas de caminho, use o caminho absoluto para o diretório de migrações
+   - Use `migrate -help` para ver todas as opções disponíveis
+
+### Commits
+Seguimos o [Conventional Commits](https://www.conventionalcommits.org/):
 - `feat:` Nova funcionalidade
 - `fix:` Correção de bugs
-- `docs:` Alterações na documentação
-- `style:` Formatação, ponto e vírgula, etc. (sem alteração de código)
-- `refactor:` Refatoração de código
-- `test:` Adicionando testes
-- `chore:` Atualização de tarefas, configurações, etc.
+- `docs:` Documentação
+- `style:` Formatação
+- `refactor:` Refatoração
+- `test:` Testes
+- `chore:` Tarefas de manutenção
 
-## 🔒 Segurança
+## 🔄 Processo de Pull Request
 
-Se você encontrar uma vulnerabilidade de segurança, por favor, não abra uma issue. Em vez disso, envie um e-mail para security@example.com.
+1. Atualize sua branch com a `main`
+2. Certifique-se que os testes estão passando
+3. Atualize o CHANGELOG.md
+4. Envie o PR com descrição clara
+5. Referencie a issue relacionada
 
 ## 📄 Licença
 
-Ao contribuir, você concorda que suas contribuições serão licenciadas sob a licença [MIT](LICENSE).
+Contribuições são licenciadas sob [MIT](LICENSE).

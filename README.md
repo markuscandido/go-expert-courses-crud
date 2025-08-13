@@ -1,14 +1,15 @@
 # Go Expert - GraphQL API
 
-API GraphQL desenvolvida em Go para o curso Go Expert.
+API GraphQL desenvolvida em Go para o curso Go Expert. Este projeto implementa um sistema de gerenciamento de cursos e categorias, com suporte a operações CRUD e relacionamentos entre entidades.
 
 ## 🚀 Começando
 
-### Pré-requisitos
+### 🛠️ Pré-requisitos
 
 - Go 1.21 ou superior
-- Docker e Docker Compose (opcional, para ambiente de desenvolvimento)
+- Docker e Docker Compose (recomendado para ambiente de desenvolvimento)
 - Git
+- PostgreSQL 15+ (ou Docker para executar em container)
 
 ### Configuração do Ambiente
 
@@ -21,12 +22,18 @@ API GraphQL desenvolvida em Go para o curso Go Expert.
 2. **Configure as variáveis de ambiente**
    Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
    ```env
-   PORT=<port>
-   DB_USER=<user>
-   DB_PASSWORD=<password>
-   DB_HOST=<host>
-   DB_PORT=<port>
-   DB_NAME=<name>
+   # Configuração do Servidor
+   PORT=8080
+   
+   # Configuração do Banco de Dados
+   DB_USER=postgres
+   DB_PASSWORD=postgres
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=courses
+   
+   # Modo de Execução (development/production)
+   ENV=development
    ```
 
 3. **Inicie o banco de dados (Docker)**
@@ -39,12 +46,26 @@ API GraphQL desenvolvida em Go para o curso Go Expert.
    go mod tidy
    ```
 
-5. **Execute a aplicação**
+## 🚀 Executando a Aplicação
+
+### Usando Docker (Recomendado)
+```bash
+docker-compose up -d
+```
+
+### Localmente
+1. **Inicie o banco de dados** (caso não esteja usando Docker):
    ```bash
-   go run ./cmd/graphql/main.go
+   docker-compose up -d postgres
    ```
 
-   A aplicação estará disponível em: http://localhost:<port>
+2. **Execute as migrações** (já são executadas automaticamente na inicialização):
+   ```bash
+   go run cmd/graphql/main.go
+   ```
+
+3. **Acesse o Playground GraphQL**
+   Abra o navegador em: http://localhost:8080
 
 ## 🛠️ Tecnologias
 
