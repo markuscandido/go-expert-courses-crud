@@ -52,6 +52,22 @@ git push origin feature/nome-da-feature
 - Mantenha as funções pequenas e focadas
 - Use `gofmt` ou `goimports` para formatação
 
+### Trabalhando com GraphQL
+
+#### Atualizando o Schema
+1. Modifique o arquivo `graph/schema.graphqls`
+2. Atualize os modelos em `graph/model/` se necessário
+3. Gere os arquivos do GraphQL:
+   ```bash
+   go run github.com/99designs/gqlgen generate
+   ```
+4. Implemente os novos resolvers em `graph/schema.resolvers.go`
+
+#### Boas Práticas
+- Sempre gere os arquivos após alterações no schema
+- Mantenha a lógica de negócios fora dos resolvers
+- Use data loaders para evitar consultas N+1 em relacionamentos
+
 ### Testes
 - Cobertura mínima de 80%
 - Adicione testes para novas funcionalidades
