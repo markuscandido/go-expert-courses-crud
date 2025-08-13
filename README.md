@@ -20,21 +20,11 @@ API GraphQL desenvolvida em Go para o curso Go Expert. Este projeto implementa u
    ```
 
 2. **Configure as variáveis de ambiente**
-   Crie um arquivo `.env` na raiz do projeto com as seguintes variáveis:
-   ```env
-   # Configuração do Servidor
-   PORT=8080
-   
-   # Configuração do Banco de Dados
-   DB_USER=postgres
-   DB_PASSWORD=postgres
-   DB_HOST=localhost
-   DB_PORT=5432
-   DB_NAME=courses
-   
-   # Modo de Execução (development/production)
-   ENV=development
-   ```
+   - Faça uma cópia do arquivo `.env.example` para `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Edite o arquivo `.env` com as configurações do seu ambiente
 
 3. **Inicie o banco de dados (Docker)**
    ```bash
@@ -65,7 +55,7 @@ docker-compose up -d
    ```
 
 3. **Acesse o Playground GraphQL**
-   Abra o navegador em: http://localhost:8080
+   Abra o navegador em: `http://localhost:8080`
 
 ## 🛠️ Tecnologias
 
@@ -77,7 +67,7 @@ docker-compose up -d
 
 ## 📝 Documentação da API
 
-Acesse o Playground GraphQL em: http://localhost:<port>
+Acesse o Playground GraphQL em: `http://localhost:8080`
 
 ### Exemplo de Consulta
 
