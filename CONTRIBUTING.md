@@ -2,43 +2,59 @@
 
 Obrigado por seu interesse em contribuir com o projeto! Este guia irá te ajudar a começar.
 
+## 🏛️ Entendendo a Arquitetura
+
+Este projeto utiliza **Arquitetura Hexagonal (Portas e Adaptadores)**. Antes de contribuir, é importante entender a organização do código:
+
+- **`internal/core`**: O coração da aplicação. Aqui ficam a lógica de negócio, entidades e interfaces (portas).
+  - **`domain`**: Entidades e DTOs puros, sem dependências externas.
+  - **`port`**: Interfaces que definem os contratos para os casos de uso e repositórios.
+  - **`usecase`**: Implementações da lógica de negócio.
+- **`internal/application/adapter`**: A implementação das "portas".
+  - **`driving`**: Adaptadores que invocam a aplicação (ex: `graphql`, `grpc`).
+  - **`driven`**: Adaptadores que são invocados pela aplicação (ex: `storage/postgres`).
+
+Ao adicionar uma nova funcionalidade, você provavelmente irá:
+1.  Criar ou alterar um `usecase`.
+2.  Implementar a porta do `driven` adapter (ex: um novo método no repositório).
+3.  Expor o `usecase` através de um `driving` adapter (ex: um novo resolver no GraphQL).
+
 ## 🚀 Primeiros Passos
 
-1. **Configuração do Ambiente**
-   - Siga as instruções do [README.md](./README.md)
-   - Certifique-se de que todos os testes estão passando:
-     ```bash
-     go test ./...
-     ```
+1.  **Configuração do Ambiente**
+    - Siga as instruções do [README.md](./README.md).
+    - Certifique-se de que a aplicação está rodando com Docker Compose:
+      ```bash
+      docker-compose up --build
+      ```
 
-2. **Encontre uma Tarefa**
-   - Verifique as [issues abertas](https://github.com/markuscandido/go-expert-courses-crud/issues)
-   - Para novas funcionalidades, abra uma issue para discussão
+2.  **Encontre uma Tarefa**
+    - Verifique as [issues abertas](https://github.com/markuscandido/go-expert-courses-crud/issues).
+    - Para novas funcionalidades, abra uma issue para discussão.
 
 ## 🔄 Fluxo de Desenvolvimento
 
 ```bash
 # 1. Faça um fork e clone o repositório
-git clone https://github.com/seu-usuario/go-expert-courses-crud.git
-cd go-expert-courses-crud
 
-# 2. Crie uma branch
+# 2. Crie uma branch a partir da `main`
 git checkout -b feature/nome-da-feature
 
 # 3. Desenvolva sua feature
 # - Siga as convenções de código abaixo
 # - Adicione testes para novas funcionalidades
-# - Atualize a documentação
+# - Atualize a documentação, se necessário
 
-# 4. Execute testes e formate o código
-golangci-lint run
+# 4. Execute testes e linter
 go test -v ./...
+golangci-lint run
 
+# 5. Formate seu código
 go fmt ./...
 
-# 5. Faça o commit seguindo o padrão Conventional Commits
+# 6. Faça o commit seguindo o padrão Conventional Commits
 git add .
-git commit -m "tipo: descrição concisa"  # Ex: feat: adiciona autenticação
+git commit -m "feat: sua nova feature"
 
 git push origin feature/nome-da-feature
 ```
@@ -46,64 +62,25 @@ git push origin feature/nome-da-feature
 ## 📝 Padrões do Projeto
 
 ### Código
-- Siga o [Effective Go](https://golang.org/doc/effective_go.html)
-- Use nomes descritivos para variáveis e funções
-- Documente funções e tipos públicos
-- Mantenha as funções pequenas e focadas
-- Use `gofmt` ou `goimports` para formatação
+- Siga o [Effective Go](https://golang.org/doc/effective_go.html).
+- Use `goimports` para formatação e organização de imports.
+- Documente funções e tipos públicos.
 
 ### Testes
-- Cobertura mínima de 80%
-- Adicione testes para novas funcionalidades
-- Execute todos os testes antes de enviar PRs
+- Adicione testes unitários para `usecases` e `adapters`.
+- Mantenha uma boa cobertura de testes.
 
 ### Migrações de Banco de Dados
-- Toda alteração no esquema requer migração
-- Formato: `000N_descricao_da_migracao.up.sql`
-- Inclua arquivo `.down.sql` para rollback
-- Migrações devem ser idempotentes
+- Para qualquer alteração no schema, crie um novo arquivo de migração.
+- Use a CLI do `golang-migrate` para criar e gerenciar as migrações.
 
-#### Gerenciamento Manual de Migrações
+#### Criando uma nova migração
+```bash
+migrate create -ext sql -dir sql/migrations -seq nome_da_migracao
+```
 
-Em alguns cenários, pode ser necessário gerenciar as migrações manualmente. Aqui está como fazer isso:
-
-1. **Instalação do golang-migrate**
-   ```bash
-   # Linux (usando curl)
-   curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.0/migrate.linux-amd64.tar.gz | tar xvz
-   sudo mv migrate /usr/local/bin/
-   
-   # macOS (usando Homebrew)
-   brew install golang-migrate
-   
-   # Windows (usando Chocolatey)
-   choco install migrate
-   ```
-
-2. **Comandos Básicos**
-   ```bash
-   # Aplicar todas as migrações pendentes
-   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations up
-   
-   # Reverter a última migração
-   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations down 1
-   
-   # Forçar a versão específica (útil em desenvolvimento)
-   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations force VERSION
-   
-   # Verificar versão atual
-   migrate -database postgres://user:pass@localhost:5432/dbname -path ./sql/migrations version
-   ```
-
-3. **Dicas de Uso**
-   - Substitua `user`, `pass`, `localhost`, `5432` e `dbname` pelas suas credenciais
-   - Use a flag `-verbose` para ver o que está acontecendo
-   - Para ambientes de produção, use variáveis de ambiente para as credenciais
-   
-4. **Solução de Problemas**
-   - Se encontrar erros de permissão, verifique as credenciais do banco de dados
-   - Para problemas de caminho, use o caminho absoluto para o diretório de migrações
-   - Use `migrate -help` para ver todas as opções disponíveis
+#### Executando as migrações (via Docker)
+O `docker-compose.yml` pode ser adaptado para executar as migrações durante o boot da aplicação.
 
 ### Commits
 Seguimos o [Conventional Commits](https://www.conventionalcommits.org/):
@@ -117,11 +94,10 @@ Seguimos o [Conventional Commits](https://www.conventionalcommits.org/):
 
 ## 🔄 Processo de Pull Request
 
-1. Atualize sua branch com a `main`
-2. Certifique-se que os testes estão passando
-3. Atualize o CHANGELOG.md
-4. Envie o PR com descrição clara
-5. Referencie a issue relacionada
+1.  Atualize sua branch com a `main`.
+2.  Certifique-se que todos os testes e o linter estão passando.
+3.  Atualize o `CHANGELOG.md` se sua mudança impacta o usuário.
+4.  Envie o Pull Request com uma descrição clara do que foi feito.
 
 ## 📄 Licença
 
