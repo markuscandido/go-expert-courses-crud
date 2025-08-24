@@ -5,6 +5,17 @@ Todas as mudanças notáveis neste projeto serão documentadas neste arquivo.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-08-16
+
+### Alterado
+- **Refatoração da Inicialização**: A lógica de inicialização dos servidores foi refatorada para suportar pontos de entrada independentes para GraphQL e gRPC.
+- O ponto de entrada combinado foi removido, mantendo apenas `cmd/graphql_server` e `cmd/grpc_server`.
+- A lógica de inicialização comum foi centralizada no novo pacote `internal/web`.
+
+### Adicionado
+- Ponto de entrada dedicado para o servidor gRPC em `cmd/grpc_server`.
+- Ponto de entrada dedicado para o servidor GraphQL em `cmd/graphql_server`.
+
 ## [0.3.0] - 2025-08-13
 
 ### Adicionado

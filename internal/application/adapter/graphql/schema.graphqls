@@ -1,0 +1,86 @@
+"""
+Escalar personalizado para representar datas e horas.
+"""
+scalar DateTime
+
+"""
+Representa uma categoria de cursos.
+"""
+type Category {
+  """O ID único da categoria."""
+  id: ID!
+  """O nome da categoria."""
+  name: String!
+  """Uma breve descrição da categoria."""
+  description: String
+  """Lista de cursos pertencentes a esta categoria."""
+  courses: [Course!]!
+  """Indica se a categoria está ativa."""
+  isActive: Boolean!
+  """Data e hora de criação da categoria."""
+  createdAt: DateTime!
+  """Data e hora da última atualização da categoria."""
+  updatedAt: DateTime!
+}
+
+"""
+Representa um curso.
+"""
+type Course {
+  """O ID único do curso."""
+  id: ID!
+  """O nome do curso."""
+  name: String!
+  """Uma breve descrição do curso."""
+  description: String
+  """A categoria à qual este curso pertence."""
+  category: Category!
+  """Indica se o curso está ativo."""
+  isActive: Boolean!
+  """Data e hora de criação do curso."""
+  createdAt: DateTime!
+  """Data e hora da última atualização do curso."""
+  updatedAt: DateTime!
+}
+
+"""
+Input para a criação de uma nova categoria.
+"""
+input NewCategory {
+  """Nome da nova categoria."""
+  name: String!
+  """Descrição opcional para a nova categoria."""
+  description: String
+}
+
+"""
+Input para a criação de um novo curso.
+"""
+input NewCourse {
+  """Nome do novo curso."""
+  name: String!
+  """Descrição opcional para o novo curso."""
+  description: String
+  """O ID da categoria à qual o curso será associado."""
+  categoryId: ID!
+}
+
+"""
+Define as queries disponíveis na API para consulta de dados.
+"""
+type Query {
+  """Retorna uma lista de todas as categorias."""
+  categories: [Category!]!
+  """Retorna uma lista de todos os cursos."""
+  courses: [Course!]!
+}
+
+"""
+Define as mutations disponíveis na API para criação ou modificação de dados.
+"""
+type Mutation {
+  """Cria uma nova categoria."""
+  createCategory(input: NewCategory!): Category!
+  """Cria um novo curso."""
+  createCourse(input: NewCourse!): Course!
+}

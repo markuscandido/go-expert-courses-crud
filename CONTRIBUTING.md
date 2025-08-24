@@ -1,6 +1,6 @@
 # Guia de Contribuição 👩‍💻👨‍💻
 
-Obrigado por contribuir para o projeto Go Expert GraphQL! Este guia irá te ajudar a começar.
+Obrigado por seu interesse em contribuir com o projeto! Este guia irá te ajudar a começar.
 
 ## 🚀 Primeiros Passos
 
@@ -12,15 +12,15 @@ Obrigado por contribuir para o projeto Go Expert GraphQL! Este guia irá te ajud
      ```
 
 2. **Encontre uma Tarefa**
-   - Verifique as [issues abertas](https://github.com/markuscandido/go-expert-graphql/issues)
+   - Verifique as [issues abertas](https://github.com/markuscandido/go-expert-courses-crud/issues)
    - Para novas funcionalidades, abra uma issue para discussão
 
 ## 🔄 Fluxo de Desenvolvimento
 
 ```bash
 # 1. Faça um fork e clone o repositório
-git clone https://github.com/seu-usuario/go-expert-graphql.git
-cd go-expert-graphql
+git clone https://github.com/seu-usuario/go-expert-courses-crud.git
+cd go-expert-courses-crud
 
 # 2. Crie uma branch
 git checkout -b feature/nome-da-feature
@@ -51,22 +51,6 @@ git push origin feature/nome-da-feature
 - Documente funções e tipos públicos
 - Mantenha as funções pequenas e focadas
 - Use `gofmt` ou `goimports` para formatação
-
-### Trabalhando com GraphQL
-
-#### Atualizando o Schema
-1. Modifique o arquivo `graph/schema.graphqls`
-2. Atualize os modelos em `graph/model/` se necessário
-3. Gere os arquivos do GraphQL:
-   ```bash
-   go run github.com/99designs/gqlgen generate
-   ```
-4. Implemente os novos resolvers em `graph/schema.resolvers.go`
-
-#### Boas Práticas
-- Sempre gere os arquivos após alterações no schema
-- Mantenha a lógica de negócios fora dos resolvers
-- Use data loaders para evitar consultas N+1 em relacionamentos
 
 ### Testes
 - Cobertura mínima de 80%

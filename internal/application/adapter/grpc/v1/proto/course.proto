@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package pb;
+
+//import "google/api/annotations.proto";
+//import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "grpc/pb";
+
+// option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+//     info: {
+//         title: "Courses gRPC API";
+//         version: "1.0";
+//         contact: {
+//             name: "Go Expert";
+//             url: "https://fullcycle.com.br";
+//             email: "contato@fullcycle.com.br";
+//         };
+//     };
+// };
+
+
+// Messages
+message Category {
+    string id = 1;
+    string name = 2;
+    optional string description = 3;
+}
+
+message CreateCategoryRequest{
+    string name = 1;
+    optional string description = 2;
+}
+
+
+message CategoryResponse{
+    Category category = 1;
+}
+
+message GetCategoryByCourseIdRequest {
+    string course_id = 1;
+}
+
+service CategoryService {
+    rpc CreateCategory(CreateCategoryRequest) returns (CategoryResponse) {}
+    rpc GetCategoryByCourseId(GetCategoryByCourseIdRequest) returns (CategoryResponse) {}
+}

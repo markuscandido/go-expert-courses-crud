@@ -1,0 +1,349 @@
+basePath: /
+definitions:
+  entity.Category:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  entity.Course:
+    properties:
+      categoryID:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  usecase.CreateCategoryInputDTO:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  usecase.CreateCategoryOutputDTO:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  usecase.CreateCourseInputDTO:
+    properties:
+      categoryID:
+        type: string
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  usecase.CreateCourseOutputDTO:
+    properties:
+      categoryID:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  usecase.ListCategoriesOutputDTO:
+    properties:
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  usecase.ListCoursesOutputDTO:
+    properties:
+      categoryID:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@example.com
+    name: API Support
+    url: http://www.example.com/support
+  description: This is a sample server for a courses CRUD application.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Go Expert Courses CRUD API
+  version: "1.0"
+paths:
+  /categories:
+    get:
+      description: Get a list of all registered categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/usecase.ListCategoriesOutputDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: List all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: Create a new category with the given input data
+      parameters:
+      - description: Category data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/usecase.CreateCategoryInputDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/usecase.CreateCategoryOutputDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new category
+      tags:
+      - categories
+  /categories/{id}:
+    get:
+      description: Get the details of a category by its unique ID
+      parameters:
+      - description: Category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Category'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get a category by ID
+      tags:
+      - categories
+  /category:
+    get:
+      consumes:
+      - application/json
+      description: get all categories
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Category'
+            type: array
+      summary: List categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: create a new category
+      parameters:
+      - description: category request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Category'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: Create a new category
+      tags:
+      - categories
+  /category/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get a category by ID
+      parameters:
+      - description: category ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Category'
+      summary: Get a category
+      tags:
+      - categories
+  /course:
+    get:
+      consumes:
+      - application/json
+      description: get all courses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/entity.Course'
+            type: array
+      summary: List courses
+      tags:
+      - courses
+    post:
+      consumes:
+      - application/json
+      description: create a new course
+      parameters:
+      - description: course request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/entity.Course'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+      summary: Create a new course
+      tags:
+      - courses
+  /course/{id}:
+    get:
+      consumes:
+      - application/json
+      description: get a course by ID
+      parameters:
+      - description: course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Course'
+      summary: Get a course
+      tags:
+      - courses
+  /courses:
+    get:
+      description: Get a list of all registered courses
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/usecase.ListCoursesOutputDTO'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: List all courses
+      tags:
+      - courses
+    post:
+      consumes:
+      - application/json
+      description: Create a new course with the given input data
+      parameters:
+      - description: Course data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/usecase.CreateCourseInputDTO'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/usecase.CreateCourseOutputDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create a new course
+      tags:
+      - courses
+  /courses/{id}:
+    get:
+      description: Get the details of a course by its unique ID
+      parameters:
+      - description: Course ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entity.Course'
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get a course by ID
+      tags:
+      - courses
+swagger: "2.0"

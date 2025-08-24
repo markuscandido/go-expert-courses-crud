@@ -1,17 +1,17 @@
 # Where are all the schema files located? globs are supported eg  src/**/*.graphqls
 schema:
-  - graph/*.graphqls
+  - internal/application/adapter/graphql/*.graphqls
 
 # Where should the generated server code go?
 exec:
-  package: graph
+  package: graphql
   layout: single-file # Only other option is "follow-schema," ie multi-file.
 
   # Only for single-file layout:
-  filename: graph/generated.go
+  filename: internal/application/adapter/graphql/generated.go
 
   # Only for follow-schema layout:
-  # dir: graph
+  # dir: graphql
   # filename_template: "{name}.generated.go"
 
   # Optional: Maximum number of goroutines in concurrency to use per child resolvers(default: unlimited)
@@ -19,15 +19,15 @@ exec:
 
 # Uncomment to enable federation
 # federation:
-#   filename: graph/federation.go
-#   package: graph
+#   filename: graphql/federation.go
+#   package: graphql
 #   version: 2
 #   options:
 #     computed_requires: true
 
 # Where should any generated models go?
 model:
-  filename: graph/model/models_gen.go
+  filename: internal/application/adapter/graphql/model/models_gen.go
   package: model
 
   # Optional: Pass in a path to a new gotpl template to use for generating the models
@@ -35,14 +35,14 @@ model:
 
 # Where should the resolver implementations go?
 resolver:
-  package: graph
+  package: graphql
   layout: follow-schema # Only other option is "single-file."
 
   # Only for single-file layout:
-  # filename: graph/resolver.go
+  # filename: graphql/resolver.go
 
   # Only for follow-schema layout:
-  dir: graph
+  dir: internal/application/adapter/graphql
   filename_template: "{name}.resolvers.go"
 
   # Optional: turn on to not generate template comments above resolvers
@@ -121,7 +121,7 @@ call_argument_directives_with_null: true
 # gqlgen will search for any type names in the schema in these go packages
 # if they match it will use them, otherwise it will generate them.
 autobind:
-#  - "github.com/markuscandido/go-expert-graphql/graph/model"
+#  - "github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql/model"
 
 # This section declares type mapping between the GraphQL and go type systems
 #
@@ -131,13 +131,18 @@ autobind:
 models:
   Category:
     model:
-      - github.com/markuscandido/go-expert-graphql/graph/model.Category
+      - github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql/dto.CategoryResponse
   Course:
     model:
-      - github.com/markuscandido/go-expert-graphql/graph/model.Course
+      - github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql/dto.CourseResponse
   ID:
     model:
       - github.com/99designs/gqlgen/graphql.ID
+  
+  # Configuração do tipo DateTime
+  DateTime:
+    model:
+      - github.com/99designs/gqlgen/graphql.Time
       - github.com/99designs/gqlgen/graphql.Int
       - github.com/99designs/gqlgen/graphql.Int64
       - github.com/99designs/gqlgen/graphql.Int32
