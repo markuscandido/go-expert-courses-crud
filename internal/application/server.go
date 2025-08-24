@@ -11,8 +11,8 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/config"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/storage/postgres"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driven/config"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driven/storage/postgres"
 	"github.com/markuscandido/go-expert-courses-crud/internal/application/core/port"
 	"github.com/markuscandido/go-expert-courses-crud/internal/application/core/usecase"
 )

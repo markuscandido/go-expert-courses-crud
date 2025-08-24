@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/markuscandido/go-expert-courses-crud/internal/application"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/grpc/v1"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driving/grpc/v1"
 )
 
 func main() {

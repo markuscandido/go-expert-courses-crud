@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/grpc/v1/pb"
+	"github.com/markuscandido/go-expert-courses-crud/api/grpc/course/v1/pb"
 	"github.com/markuscandido/go-expert-courses-crud/internal/application/core/domain/dto"
 	"github.com/markuscandido/go-expert-courses-crud/internal/application/core/port"
 	"google.golang.org/grpc/codes"

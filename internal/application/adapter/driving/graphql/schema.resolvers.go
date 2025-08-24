@@ -7,8 +7,8 @@ package graphql
 import (
 	"context"
 
-	dto_graphql "github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql/dto"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql/model"
+	dto_graphql "github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driving/graphql/dto"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driving/graphql/model"
 	"github.com/markuscandido/go-expert-courses-crud/internal/application/core/domain/dto"
 )
 

@@ -15,8 +15,8 @@ import (
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql/dto"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql/model"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driving/graphql/dto"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driving/graphql/model"
 	gqlparser "github.com/vektah/gqlparser/v2"
 	"github.com/vektah/gqlparser/v2/ast"
 )

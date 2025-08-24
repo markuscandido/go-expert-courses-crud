@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/markuscandido/go-expert-courses-crud/internal/application"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/graphql"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driving/graphql"
 )
 
 func main() {

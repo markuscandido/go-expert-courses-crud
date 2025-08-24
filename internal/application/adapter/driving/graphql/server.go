@@ -7,7 +7,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/markuscandido/go-expert-courses-crud/internal/application"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/config"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driven/config"
 )
 
 func StartGraphQLServer(cfg *config.Config, useCases *application.UseCases) {

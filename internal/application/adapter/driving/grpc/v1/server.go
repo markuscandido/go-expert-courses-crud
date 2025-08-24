@@ -5,10 +5,10 @@ import (
 	"log"
 	"net"
 
+	"github.com/markuscandido/go-expert-courses-crud/api/grpc/course/v1/pb"
 	"github.com/markuscandido/go-expert-courses-crud/internal/application"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/config"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/grpc/v1/pb"
-	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/grpc/v1/service"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driven/config"
+	"github.com/markuscandido/go-expert-courses-crud/internal/application/adapter/driving/grpc/v1/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
