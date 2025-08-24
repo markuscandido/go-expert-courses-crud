@@ -32,7 +32,7 @@ func (r *categoryRepository) Create(ctx context.Context, category *entity.Catego
 	query := `
 		INSERT INTO categories (id, name, description)
 		VALUES ($1, $2, $3)
-		RETURNING id
+		RETURNING id, created_at, updated_at, is_active
 	`
 
 	err := r.db.QueryRowContext(
@@ -41,7 +41,12 @@ func (r *categoryRepository) Create(ctx context.Context, category *entity.Catego
 		category.ID,
 		category.Name,
 		category.Description,
-	).Scan(&category.ID)
+	).Scan(
+		&category.ID,
+		&category.CreatedAt,
+		&category.UpdatedAt,
+		&category.IsActive,
+	)
 
 	if err != nil {
 		if pgErr, ok := err.(*pgconn.PgError); ok && pgErr.Code == duplicateKeyError {
